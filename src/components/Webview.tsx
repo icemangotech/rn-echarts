@@ -60,7 +60,10 @@ export default class Echarts extends Component<Props> {
           scrollEnabled={false}
           originWhitelist={['*']}
           startInLoadingState={Platform.OS === 'ios'}
-          source={require('../../assets/template.html')}
+          source={Platform.select({
+            ios: require('../../assets/template.html'),
+            android: { uri: 'file:///android_asset/template.html' },
+          })}
           onMessage={this.onMessage}
           injectedJavaScript={renderCharts({
             options: this.props.options,

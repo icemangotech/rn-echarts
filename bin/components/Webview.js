@@ -36,7 +36,10 @@ export default class Echarts extends Component {
     }
     render() {
         return (<View style={this.props.containerStyle}>
-        <Webview ref={this.webview} scalesPageToFit scrollEnabled={false} originWhitelist={['*']} startInLoadingState={Platform.OS === 'ios'} source={require('../../assets/template.html')} onMessage={this.onMessage} injectedJavaScript={renderCharts({
+        <Webview ref={this.webview} scalesPageToFit scrollEnabled={false} originWhitelist={['*']} startInLoadingState={Platform.OS === 'ios'} source={Platform.select({
+            ios: require('../../assets/template.html'),
+            android: { uri: 'file:///android_asset/template.html' },
+        })} onMessage={this.onMessage} injectedJavaScript={renderCharts({
             options: this.props.options,
             ...this.props.canvasSize,
             isFirst: true,
