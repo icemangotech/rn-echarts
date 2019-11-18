@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import { Platform, StyleProp, ViewStyle, View } from 'react-native';
 import Webview, { WebViewMessageEvent } from 'react-native-webview';
 import isEqual from 'react-fast-compare';
@@ -8,29 +8,24 @@ import { EChartOption } from 'echarts';
 interface Props {
   options: EChartOption;
   containerStyle?: StyleProp<ViewStyle>;
-  canvasSize: {
-    width: number;
-    height: number;
-  };
+  width: number;
+  height: number;
   onChooseSeries?: (event: any) => void;
   onChooseLegend?: (event: any) => void;
 }
 
-export default class Echarts extends Component<Props> {
-  shouldComponentUpdate(nextProps: Props) {
-    const shouldChange = !isEqual(this.props.options, nextProps.options);
-    return shouldChange;
-  }
-
+export default class Echarts extends PureComponent<Props> {
   webview = React.createRef<Webview>();
 
   componentDidUpdate(prevProps: Props) {
     if (!isEqual(prevProps, this.props)) {
+      const { width, height, options } = this.props;
       this.webview.current &&
         this.webview.current.injectJavaScript(
           renderCharts({
-            options: this.props.options,
-            ...this.props.canvasSize,
+            options,
+            width,
+            height,
             isFirst: false,
           })
         );
@@ -52,8 +47,9 @@ export default class Echarts extends Component<Props> {
   };
 
   render() {
+    const { width, height, containerStyle, options } = this.props;
     return (
-      <View style={this.props.containerStyle}>
+      <View style={[{ width, height }, containerStyle]}>
         <Webview
           ref={this.webview}
           scalesPageToFit
@@ -62,12 +58,13 @@ export default class Echarts extends Component<Props> {
           startInLoadingState={Platform.OS === 'ios'}
           source={Platform.select({
             ios: require('../../assets/template.html'),
-            android: { uri: 'file:///android_asset/template.html' },
+            android: { uri: 'file:///android_asset/rn-echarts-template.html' },
           })}
           onMessage={this.onMessage}
           injectedJavaScript={renderCharts({
-            options: this.props.options,
-            ...this.props.canvasSize,
+            options,
+            width,
+            height,
             isFirst: true,
           })}
         />
