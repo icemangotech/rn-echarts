@@ -1,6 +1,6 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import { Platform, StyleProp, ViewStyle, View } from 'react-native';
-import Webview from 'react-native-webview';
+import Webview, { WebViewMessageEvent } from 'react-native-webview';
 import isEqual from 'react-fast-compare';
 import renderCharts from '../utils/renderCharts';
 import { EChartOption } from 'echarts';
@@ -12,9 +12,11 @@ interface Props {
     width: number;
     height: number;
   };
+  onChooseSeries?: (event: any) => void;
+  onChooseLegend?: (event: any) => void;
 }
 
-export default class Echarts extends PureComponent<Props> {
+export default class Echarts extends Component<Props> {
   shouldComponentUpdate(nextProps: Props) {
     const shouldChange = !isEqual(this.props.options, nextProps.options);
     return shouldChange;
@@ -35,6 +37,20 @@ export default class Echarts extends PureComponent<Props> {
     }
   }
 
+  private onMessage = (e: WebViewMessageEvent) => {
+    const event = JSON.parse(e.nativeEvent.data);
+    const { onChooseLegend, onChooseSeries } = this.props;
+    if (event.type === 'legendselectchanged' && onChooseLegend) {
+      onChooseLegend(event);
+    } else if (
+      event.type === 'click' &&
+      event.componentType === 'series' &&
+      onChooseSeries
+    ) {
+      onChooseSeries(event);
+    }
+  };
+
   render() {
     return (
       <View style={this.props.containerStyle}>
@@ -45,6 +61,7 @@ export default class Echarts extends PureComponent<Props> {
           originWhitelist={['*']}
           startInLoadingState={Platform.OS === 'ios'}
           source={require('../../assets/template.html')}
+          onMessage={this.onMessage}
           injectedJavaScript={renderCharts({
             options: this.props.options,
             ...this.props.canvasSize,

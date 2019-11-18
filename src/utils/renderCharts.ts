@@ -23,9 +23,9 @@ ${
         tmp[p] = params[p];
       }
     }
-    window.postMessage(JSON.stringify(tmp));
+    window.ReactNativeWebView.postMessage(JSON.stringify(tmp));
   });
   myChart.on('legendselectchanged', function(params) {
-    window.postMessage(JSON.stringify(params));
+    window.ReactNativeWebView.postMessage(JSON.stringify(params));
   });
 `;
