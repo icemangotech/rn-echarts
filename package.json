@@ -1,0 +1,38 @@
+{
+  "name": "rn-echarts",
+  "title": "Rn Echarts",
+  "version": "1.0.0",
+  "description": "TODO",
+  "main": "bin/index.js",
+  "types": "bin/index.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/icemangotech/rn-echarts.git",
+    "baseUrl": "https://github.com/icemangotech/rn-echarts"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": {
+    "name": "phecda",
+    "email": "phecda@brae.co"
+  },
+  "license": "MIT",
+  "licenseFilename": "LICENSE",
+  "readmeFilename": "README.md",
+  "peerDependencies": {
+    "react": "^16.8.1",
+    "react-native": ">=0.59.0-rc.0 <1.0.x",
+    "react-native-webview": "^7.5.1"
+  },
+  "devDependencies": {
+    "@types/react-native": "^0.60.22",
+    "react": "^16.8.3",
+    "react-native": "^0.60",
+    "react-native-webview": "^7.5.1",
+    "typescript": "^3.7.2"
+  }
+}
