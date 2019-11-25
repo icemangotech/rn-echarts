@@ -1,4 +1,4 @@
-package com.braeco;
+package com.braeco.echarts;
 
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;

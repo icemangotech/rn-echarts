@@ -1,4 +1,4 @@
-package com.braeco;
+package com.braeco.echarts;
 
 import java.util.Arrays;
 import java.util.Collections;
